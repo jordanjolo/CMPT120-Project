@@ -26,7 +26,7 @@ def introduction(name, trait): # showing introduction of the game, title and bac
     print('\n')
 
     
-def locations(): # holding list discriptions and lacation valiables signed to indexes, return locations and descriptions
+def locations(): # function with the list of the description of different location 
     descriptions = [
         ("                CENTRAL PARK\n"
          "You are walking at in the infamous New Yorker park: Central Park. It is very dark, there is barely any lights."
@@ -76,6 +76,7 @@ def locations(): # holding list discriptions and lacation valiables signed to in
             "Don't forget your objective is to arrive to your hotel safe and sound. Don't waste too much time here because, as of right now, you have "
             "a long journey ahead of you. Good luck. I hope you will find a way out of this gigantic airport. ")
         ]
+    # indexing locations 
     park = 0
     prison = 1
     bar = 2
@@ -86,7 +87,7 @@ def locations(): # holding list discriptions and lacation valiables signed to in
     airport = 7
     
     
-    return descriptions, park, prison, bar, island, museum, memorial, hotel, airport
+    return descriptions, park, prison, bar, island, museum, memorial, hotel, airport # return locations and descriptions
 
 def conclude(score, name): # show copyright and show scores
     end = "\nCongratulations! You made it to your hotel. \nNow you can rest and tell your family and friends about your magic nights in NYC! "
@@ -96,27 +97,27 @@ def conclude(score, name): # show copyright and show scores
     print("Your final score is:" , score,"\n")
     print(copyRight)
 
-def location_scorefunc(current_location, score, descriptions):
+def location_scorefunc(current_location, score, descriptions): # function that will calcualted the score and print the current location description
         score +=10 # add 10 on the score 
         print(descriptions[current_location]) # print the description of the current location
         return score 
 
 
-def gameloop(name):
+def gameloop(name): #this function is the game loop
 
     descriptions, park, prison, bar, island, museum, memorial, hotel, airport = locations()
-    askforhelp = "You can only move 'north', 'east', 'west' or 'south' from your current location. \nPlease enter either of these four options. "
+    askforhelp = "You can only move 'north', 'east', 'west' or 'south' from your current location. \nPlease enter either of these four options. " # this is the help string
     current_location = airport
     location_visited = [current_location]
-    print(descriptions[7])
-    score = 0
-    while True :
+    print(descriptions[7]) #print the current initial location (the airport) before starting the loop
+    score = 0  #score set up at 0
+    while True :   #beginning of the game loop
         print("\n")
         print(name, ", your current score is:", score, "\n" )
         direction = input("Enter type which location you would like to go (north, south, east or west) or ask for 'help' or 'quit' : ").strip().lower()
         print("\n")
-        if direction in ["north", "east", "south", "west"]:
-            if current_location == airport:
+        if direction in ["north", "east", "south", "west"]:   
+            if current_location == airport:  # location path if user is located at the airport
                 if direction == "south":
                     print("You are still at the same location, JFK airport, you must get out soon! \n")
                 elif direction == "north":
@@ -130,7 +131,7 @@ def gameloop(name):
                     current_location = museum
                 score = location_scorefunc(current_location, score, descriptions)
                     
-            elif current_location == prison:
+            elif current_location == prison: # location path if user is located at the prison
                 if direction in ["east", "south"]:
                     print("You haven't move, you are still inside the prison. \nTime is running! Be Careful! \n")
                 elif direction == "north":
@@ -141,7 +142,7 @@ def gameloop(name):
                     current_location = airport
                 score = location_scorefunc(current_location, score, descriptions)
                 
-            elif current_location == park:
+            elif current_location == park: # location path if user is located at the park
                 if direction == "east" :
                     print ("Still in central park! Sorry!\n")
                 elif direction == "north":
@@ -155,7 +156,7 @@ def gameloop(name):
                     current_location = prison
                 score = location_scorefunc(current_location, score, descriptions)
                  
-            elif current_location == island:
+            elif current_location == island: # location path if user is located at ellis island
                 if direction == "north":
                     print("you are still on the island. \n")
                 elif direction == "east":
@@ -169,7 +170,7 @@ def gameloop(name):
                     current_location = memorial
                 score = location_scorefunc(current_location, score, descriptions)
                 
-            elif current_location == museum:
+            elif current_location == museum:  # location path if user is located at the MET museum
                 if direction in ["west", "south"]:
                     print("You haven't move. I see that you like this musem a lot! \nTime is running! Be Careful! \n")
                 elif direction == "north":
@@ -180,7 +181,7 @@ def gameloop(name):
                     current_location = airport
                 score = location_scorefunc(current_location, score, descriptions)
                 
-            elif current_location == bar:
+            elif current_location == bar: # location path if user is located at the bar
                 if direction in ["north", "east"]:
                     print ("You are having a lot of fun at the bar. You haven't left yet! \n")
                 elif direction in "south":
@@ -190,7 +191,7 @@ def gameloop(name):
                     current_location = hotel
                 score = location_scorefunc(current_location, score, descriptions)
                     
-            elif current_location == memorial:
+            elif current_location == memorial: # location path if user is located at the 9/11 memorial
                 if direction == "west":
                     print("You are still at the memorial! \n")
                 elif direction == "east":
@@ -203,27 +204,29 @@ def gameloop(name):
                     current_location = hotel
                 score = location_scorefunc(current_location, score, descriptions)
                     
-            if current_location == hotel:
+            if current_location == hotel: # location path if user is located at the museum then the loops ends sicne user arrived at final destination
                 break
             
-        elif direction == "help":
+        elif direction == "help":   # print the 'help' statement if the user input 'help'
             print(askforhelp)
             
-        elif direction == "quit":
+        elif direction == "quit":   # print the 'ending' statement if user unput 'quit'
             print("You have exited the game. \n")
             print("Your final score is ", score)
             return
         else:
-            print ("Invalid input has been entered. \n")
-    conclude(score, name)
+            print ("Invalid input has been entered. \n") # if the user enter an invalid input other than 'quit','help','north','south','east',west'
+    conclude(score, name) #calling the 'conclude' function to print the ending message and copyright statement
         
-def main():
-    name, trait = UserInputInfo()
-    introduction(name, trait)
-    gameloop(name)
+def main():     #main function
+    name, trait = UserInputInfo()   #calling the userimputfunction to ask user for his information
+    introduction(name, trait)       # callign the introduction
+    gameloop(name)                  #running the loop
 
 
-main()      
+main()
+
+      
                     
                     
                     
