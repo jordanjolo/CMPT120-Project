@@ -36,10 +36,10 @@ def locations(): # function with the list of the description of different locati
         , ("           PRISON: RIKERS ISLAND\n"
            "Ohohohoh !!! You just landed at the worst location in NYC ever: Rikers Island, the home to New York City's main prison complex. "
            "You are now with the most dangerous felons and individuals located in New York state."
-           "You have no means of communication, no way to escape apart from the ferry who is about to leave this nighmare island in a few minutes."
+           "You have no means of communication, no way to escape apart from the ferry who is about to leave this nighmare island in a few minutes. "
            "Jump on the Ferry quickly or your life is ended soon.")
         , ("              BAR\n"
-           "You arrived just arrived at a bar called Miss Lilys. there are people waiting in line to enter the bar."
+           "You arrived just arrived at a bar called Miss Lily's. there are people waiting in line to enter the bar."
            "The music is very nice. The entrance to the bar is free for new foreign. That's perfect for you, especially since you don't have "
            "your wallet with you. You can either decide to stay and have fun for a bit but you may still endanger "
            "your life, OR you just continue to explore the different areas of NYC untill you find your hotel. ")
@@ -71,10 +71,10 @@ def locations(): # function with the list of the description of different locati
             "yet amazing streets of new york city. You also go to the top and discover this humongous rooftop bar with this outstanding swimming pool. ")
         , ( "                JOHN F. KENNEDY AIRPORT\n"
             "You have just arrived at the busiest international airport in North America: JFK Airport. This airport is very big, it is easy to get lost while "
-            "trying to find a way out. It's night time, hence, there aren't much people to hear to find an 'EXIT' door. You have to figure it out on "
-            "your own. Read the signs and instructions carefully but you must hurry up because some shadows has been following you since you arrived at the airport. "
+            "trying to find a way out. It's night time, hence, there aren't much people to help you find the nearest 'EXIT' door. You have to figure it out on "
+            "your own! Read the signs and instructions carefully but you must hurry up because some shadows have been following you since you've arrived at the airport. "
             "Don't forget your objective is to arrive to your hotel safe and sound. Don't waste too much time here because, as of right now, you have "
-            "a long journey ahead of you. Good luck. I hope you will find a way out of this gigantic airport. ")
+            "a long journey ahead of you. Good luck, mate! I hope you will find a way out of this gigantic airport. ")
         ]
     # indexing locations 
     park = 0
@@ -97,116 +97,145 @@ def conclude(score, name): # show copyright and show scores
     print("Your final score is:" , score,"\n")
     print(copyRight)
 
-def location_scorefunc(current_location, score, descriptions): # function that will calcualted the score and print the current location description
-        score +=10 # add 10 on the score 
-        print(descriptions[current_location]) # print the description of the current location
-        return score 
+def location_scorefunc(current_location, score, descriptions, name): # function that will calculated the score and print the current location description
+    print(descriptions[current_location]) # print the description of the current location
+    print()
+    score += 10
+    print(name, ", your current score is:", score, "\n" )
+    return score
+
+def visitIsland(current_location, island, score, descriptions, name):
+    print("Welcome to Ellis Island \n")
+    current_location = island
+    score = location_scorefunc(current_location, score, descriptions, name)
+    return score, current_location
+
+def visitPrison(current_location, prison, score, descriptions, name):
+    print("Sad,", name, "you are in prison now !\n")
+    current_location = prison
+    score = location_scorefunc(current_location, score, descriptions, name)
+    return score, current_location
+
+def visitMuseum(current_location, museum, score, descriptions, name):
+    print("Welcome to the MET Museum. \n")
+    current_location = museum
+    score = location_scorefunc(current_location, score, descriptions, name)
+    return score, current_location
+
+def visitCentralPark(current_location, park, score, descriptions, name):
+    print("Welcome to Central Park! \n")
+    current_location = park
+    score = location_scorefunc(current_location, score, descriptions, name)
+    return score, current_location
+
+def visitMemorial(current_location, memorial, score, descriptions, name):
+    print("You have now arrived at the 9/11 memorial! \n")
+    current_location = memorial
+    score = location_scorefunc(current_location, score, descriptions, name)
+    return score
+
+def visitHotel(current_location, hotel, score, descriptions, name):
+    print("You made it to the Hotel on time! \n")
+    current_location = hotel
+    score = location_scorefunc(current_location, score, descriptions, name)
+    return score, current_location
+
+def visitBar(current_location, bar, score, descriptions, name):
+    print("Welcome to Miss Lily's Rooftop Bar! \n")
+    current_location = bar
+    score = location_scorefunc(current_location, score, descriptions, name)
+    return score, current_location
+
+def visitAirport(current_location, airport, score, descriptions, name):
+    print("Back at your initial destination! \nSorry, you must start all over again! \nGood luck! \n")
+    current_location = airport
+    score = location_scorefunc(current_location, score, descriptions, name)
+    return score, current_location
 
 
 def gameloop(name): #this function is the game loop
 
     descriptions, park, prison, bar, island, museum, memorial, hotel, airport = locations()
     askforhelp = "You can only move 'north', 'east', 'west' or 'south' from your current location. \nPlease enter either of these four options. " # this is the help string
+    no_new_move = "You have not moved! You still are at the same location! Be careful! \n" 
+
     current_location = airport
-    location_visited = [current_location]
-    print(descriptions[7]) #print the current initial location (the airport) before starting the loop
+    print(descriptions[current_location]) #print the current initial location (the airport) before starting the loop
     score = 0  #score set up at 0
+    
     while True :   #beginning of the game loop
-        print("\n")
-        print(name, ", your current score is:", score, "\n" )
-        direction = input("Enter type which location you would like to go (north, south, east or west) or ask for 'help' or 'quit' : ").strip().lower()
+        direction = input("\nEnter type which location you would like to go (north, south, east or west) or ask for 'help' or 'quit' : ").strip().lower()
         print("\n")
         if direction in ["north", "east", "south", "west"]:   
             if current_location == airport:  # location path if user is located at the airport
                 if direction == "south":
-                    print("You are still at the same location, JFK airport, you must get out soon! \n")
+                    print(no_new_move)
                 elif direction == "north":
-                    print("Welcome to Ellis Island \n")
-                    current_location = island
+                    visitIsland(current_location, island, score, descriptions, name)
                 elif direction == "east":
-                    print("Oops, you just got yourself stuck in jail. \n")
-                    current_location = prison
+                    visitPrison(current_location, prison, score, descriptions, name)
                 elif direction == "west":
-                    print("You are arrived in the museum! \n")
-                    current_location = museum
-                score = location_scorefunc(current_location, score, descriptions)
+                    visitMuseum(current_location, museum, score, descriptions, name)
                     
             elif current_location == prison: # location path if user is located at the prison
                 if direction in ["east", "south"]:
-                    print("You haven't move, you are still inside the prison. \nTime is running! Be Careful! \n")
+                    print(no_new_move)
                 elif direction == "north":
-                    print("Welcome to Central Park! \n")
-                    current_location = park
+                    visitCentralPark(current_location, park, score, descriptions, name)
                 elif direction == "west":
-                    print("Back to square one, you are in the airport. \n" )
-                    current_location = airport
-                score = location_scorefunc(current_location, score, descriptions)
+                    visitAirport(current_location, airport, score, descriptions, name)
+                
                 
             elif current_location == park: # location path if user is located at the park
                 if direction == "east" :
-                    print ("Still in central park! Sorry!\n")
+                    print (no_new_move)
                 elif direction == "north":
-                    print("You have arrived at a bar.\n")
-                    current_location = bar
+                    visitBar(current_location, bar, score, descriptions, name)
                 elif direction == "west":
-                    print("You are now at Ellis Island to see the statute of liberty.\n")
-                    current_location = island
+                    visitIsland(current_location, island, score, descriptions, name)
                 elif direction == "south":
-                    print("Back to Prison")
-                    current_location = prison
-                score = location_scorefunc(current_location, score, descriptions)
+                    visitPrison(current_location, prison, score, descriptions, name)
                  
             elif current_location == island: # location path if user is located at ellis island
                 if direction == "north":
-                    print("you are still on the island. \n")
+                    print(no_new_move)
                 elif direction == "east":
-                    print("Central Park is a beautiful place to chill, right? \n")
-                    current_location = park
+                    visitCentralPark(current_location, park, score, descriptions, name)
                 elif direction == "south":
-                    print("you are back at the airport. Hurry up !\n")
-                    current_location = airport
+                    visitAirport(current_location, airport, score, descriptions, name)
                 elif direction == "west":
-                    print("Welcome to the 9/11 memorial. \nLet's take a moment of silence for those lifes that died on that tragic day. \n")
-                    current_location = memorial
-                score = location_scorefunc(current_location, score, descriptions)
+                    visitMemorial(current_location, memorial, score, descriptions, name)
                 
             elif current_location == museum:  # location path if user is located at the MET museum
                 if direction in ["west", "south"]:
-                    print("You haven't move. I see that you like this musem a lot! \nTime is running! Be Careful! \n")
+                    print(no_new_move)
                 elif direction == "north":
-                    print("You just arrived to the 9/11 memorial. \n")
-                    current_location = memorial
+                    visitMemorial(current_location, memorial, score, descriptions, name)
                 elif direction == "east":
-                    print("You are back to the airport. Hurry to get to the hotel. \n" )
-                    current_location = airport
-                score = location_scorefunc(current_location, score, descriptions)
+                    visitAirport(current_location, airport, score, descriptions, name)
                 
             elif current_location == bar: # location path if user is located at the bar
                 if direction in ["north", "east"]:
-                    print ("You are having a lot of fun at the bar. You haven't left yet! \n")
+                    print (no_new_move)
                 elif direction in "south":
-                    print("You are back to Central Park. \n")
-                    current_location = park
+                    visitCentralPark(current_location, park, score, descriptions, name)
                 elif direction == "west":
-                    current_location = hotel
-                score = location_scorefunc(current_location, score, descriptions)
+                    visitHotel(current_location, hotel, score, descriptions, name)
                     
             elif current_location == memorial: # location path if user is located at the 9/11 memorial
                 if direction == "west":
-                    print("You are still at the memorial! \n")
+                    print(no_new_move)
                 elif direction == "east":
-                    print("You are now looking at the statute of liberty.\n")
-                    current_location = island
+                    visitIsland(current_location, island, score, descriptions, name)
                 elif direction == "south":
-                    print("Back at the MET Museum! \n")
-                    current_location = museum
+                    visitMuseum(current_location, museum, score, descriptions, name)
                 elif direction == "north":
-                    current_location = hotel
-                score = location_scorefunc(current_location, score, descriptions)
+                    visitHotel(current_location, hotel, score, descriptions, name)
                     
             if current_location == hotel: # location path if user is located at the museum then the loops ends sicne user arrived at final destination
                 break
             
+    
         elif direction == "help":   # print the 'help' statement if the user input 'help'
             print(askforhelp)
             
@@ -225,12 +254,3 @@ def main():     #main function
 
 
 main()
-
-      
-                    
-                    
-                    
-
-        
-    
-
